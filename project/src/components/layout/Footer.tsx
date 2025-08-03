@@ -49,19 +49,23 @@ export default function Footer() {
 
           <div>
             <h3 className="text-lg font-semibold mb-4">Contact Info</h3>
-            <div className="space-y-3 text-gray-400">
-              <p className="flex items-center">
-                <Phone className="h-5 w-5 mr-3 text-blue-400" />
-                +1 (202) 743-4091
-              </p>
-              <a href="mailto:hr@infleciq.org" className="text-gray-600 hover:underline">
-  hr@infleciq.org
-</a>
-              <p className="flex items-center">
-                <MapPin className="h-5 w-5 mr-3 text-blue-400" />
-                Dover, DE 19901
-              </p>
-            </div>
+           <div className="space-y-2 text-sm text-gray-300">
+  <p className="flex items-center">
+    <Phone className="h-5 w-5 mr-3 text-blue-400" />
+    +1 (202) 743-4091
+  </p>
+
+  <a href="mailto:hr@infleciq.org" className="flex items-center text-gray-300 hover:underline">
+    <Mail className="h-5 w-5 mr-3 text-blue-400" />
+    hr@infleciq.org
+  </a>
+
+  <p className="flex items-center">
+    <MapPin className="h-5 w-5 mr-3 text-blue-400" />
+    Dover, DE 19901
+  </p>
+</div>
+
           </div>
         </div>
 
