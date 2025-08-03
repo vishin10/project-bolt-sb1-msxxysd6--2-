@@ -184,15 +184,18 @@ export default function Contact() {
                     <div>
                       <h4 className="font-semibold text-gray-900">Phone</h4>
                       <p className="text-gray-600">+1 (202) 743-4091</p>
-                      <p className="text-sm text-gray-500">Mon-Fri 9AM-6PM EST</p>
+                      <p className="text-sm text-gray-500">Mon-Fri 9AM-5PM EST</p>
                     </div>
                   </div>
                   <div className="flex items-start space-x-4">
                     <Mail className="h-6 w-6 text-blue-600 mt-1" />
                     <div>
-                      <h4 className="font-semibold text-gray-900">Email</h4>
-                      <p className="text-gray-600">info@infleciq.com</p>
-                      <p className="text-sm text-gray-500">We respond within 24 hours</p>
+                     <h4 className="font-semibold text-gray-900">Email</h4>
+<a href="mailto:hr@infleciq.org" className="text-gray-600 hover:underline">
+  hr@infleciq.org
+</a>
+<p className="text-sm text-gray-500">We respond within 24 hours</p>
+
                     </div>
                   </div>
                   <div className="flex items-start space-x-4">
