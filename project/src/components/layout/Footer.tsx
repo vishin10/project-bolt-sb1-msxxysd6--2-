@@ -12,7 +12,7 @@ export default function Footer() {
               <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-teal-600 rounded-lg flex items-center justify-center">
                 <Brain className="h-5 w-5 text-white" />
               </div>
-              <span className="text-xl font-bold">InflecIQ LLC</span>
+              <span className="text-xl font-bold">InflecIQ</span>
             </div>
             <p className="text-gray-400 mb-6 max-w-md">
               Empowering innovation with technology, data, and AI solutions. 
@@ -52,12 +52,11 @@ export default function Footer() {
             <div className="space-y-3 text-gray-400">
               <p className="flex items-center">
                 <Phone className="h-5 w-5 mr-3 text-blue-400" />
-                +1 (555) 123-4567
+                +1 (202) 743-4091
               </p>
-              <p className="flex items-center">
-                <Mail className="h-5 w-5 mr-3 text-blue-400" />
-                info@infleciq.com
-              </p>
+              <a href="mailto:hr@infleciq.org" className="text-gray-600 hover:underline">
+  hr@infleciq.org
+</a>
               <p className="flex items-center">
                 <MapPin className="h-5 w-5 mr-3 text-blue-400" />
                 Dover, DE 19901
@@ -67,7 +66,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-          <p>&copy; {new Date().getFullYear()} InflecIQ LLC. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} InflecIQ. All rights reserved.</p>
         </div>
       </div>
     </footer>
