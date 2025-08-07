@@ -11,13 +11,78 @@ export default function Contact() {
     message: ''
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would typically send the form data to your backend
-    console.log('Form submitted:', formData);
-    setIsSubmitted(true);
-    setTimeout(() => setIsSubmitted(false), 3000);
+    setIsSubmitting(true);
+
+    try {
+      // Validate required fields
+      if (!formData.name || !formData.email || !formData.message) {
+        alert('Please fill in all required fields');
+        setIsSubmitting(false);
+        return;
+      }
+
+      // Service mapping for better display
+      const getServiceDisplayName = (service: string) => {
+        const serviceMap: { [key: string]: string } = {
+          'web-development': 'Web Development',
+          'app-development': 'App Development',
+          'data-science': 'Data Science & AI',
+          'business-analytics': 'Business Analytics',
+          'cloud-solutions': 'Cloud Solutions',
+          'cybersecurity': 'Cybersecurity'
+        };
+        return serviceMap[service] || service;
+      };
+
+      // Create professional email content
+      const emailBody = `New Contact Form Submission from ${formData.name}
+
+CONTACT INFORMATION:
+Name: ${formData.name}
+Email: ${formData.email}
+Company: ${formData.company || 'Not specified'}
+
+SERVICE INTEREST:
+${formData.service ? getServiceDisplayName(formData.service) : 'Not specified'}
+
+PROJECT DETAILS:
+${formData.message}
+
+---
+Submitted via InflecIQ Contact Form
+Date: ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`;
+
+      // Create mailto link
+      const subject = `New Project Inquiry from ${formData.name}${formData.company ? ` (${formData.company})` : ''}`;
+      const mailtoLink = `mailto:hr@infleciq.org?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBody)}`;
+      
+      // Open email client
+      window.open(mailtoLink, '_blank');
+
+      console.log('Form submitted:', formData);
+      setIsSubmitted(true);
+      
+      // Reset form
+      setFormData({
+        name: '',
+        email: '',
+        company: '',
+        service: '',
+        message: ''
+      });
+
+      setTimeout(() => setIsSubmitted(false), 5000);
+
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      alert('Error submitting form. Please email hr@infleciq.org directly.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -66,7 +131,10 @@ export default function Contact() {
                   className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-center"
                 >
                   <CheckCircle className="h-5 w-5 text-green-600 mr-2" />
-                  <span className="text-green-800">Thank you! We'll get back to you within 24 hours.</span>
+                  <div>
+                    <span className="text-green-800 font-semibold">Message sent successfully!</span>
+                    <p className="text-sm text-green-700">Your email client should have opened. Please send the pre-filled email to complete your submission.</p>
+                  </div>
                 </motion.div>
               )}
 
@@ -159,12 +227,25 @@ export default function Contact() {
 
                 <motion.button
                   type="submit"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="w-full bg-gradient-to-r from-blue-600 to-teal-600 text-white px-8 py-4 rounded-xl hover:shadow-lg transition-all duration-300 font-semibold flex items-center justify-center"
+                  disabled={isSubmitting}
+                  whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
+                  whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
+                  className="w-full bg-gradient-to-r from-blue-600 to-teal-600 text-white px-8 py-4 rounded-xl hover:shadow-lg transition-all duration-300 font-semibold flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  <Send className="h-5 w-5 mr-2" />
-                  Send Message
+                  {isSubmitting ? (
+                    <>
+                      <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Opening Email...
+                    </>
+                  ) : (
+                    <>
+                      <Send className="h-5 w-5 mr-2" />
+                      Send Message
+                    </>
+                  )}
                 </motion.button>
               </form>
             </motion.div>

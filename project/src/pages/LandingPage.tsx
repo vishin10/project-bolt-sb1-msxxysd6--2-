@@ -16,6 +16,7 @@ import {
   Phone,
   MapPin
 } from 'lucide-react';
+import { useState } from 'react';
 
 export default function LandingPage() {
   const services = [
@@ -44,6 +45,67 @@ export default function LandingPage() {
       image: "https://images.pexels.com/photos/590022/pexels-photo-590022.jpeg"
     }
   ];
+
+
+const [formData, setFormData] = useState({
+  name: '',
+  email: '',
+  message: ''
+});
+const [isSubmitting, setIsSubmitting] = useState(false);
+
+
+const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const { name, value } = e.target;
+  setFormData(prev => ({
+    ...prev,
+    [name]: value
+  }));
+};
+
+
+
+const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+  setIsSubmitting(true);
+  try {
+    // Validate form data
+    if (!formData.name || !formData.email || !formData.message) {
+      alert('Please fill in all required fields');
+      setIsSubmitting(false);
+      return;
+    }
+
+    // Create email content
+    const emailBody = `New Contact Form Submission:
+
+Name: ${formData.name}
+Email: ${formData.email}
+
+Message:
+${formData.message}
+
+---
+Sent from Contact Form`;
+
+    // Create mailto link
+    const subject = `New Contact Form Submission from ${formData.name}`;
+    const mailtoLink = `mailto:hr@infleciq.org?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBody)}`;
+    
+    // Open email client
+    window.open(mailtoLink, '_blank');
+
+    // Reset form
+    setFormData({ name: '', email: '', message: '' });
+    alert('Your email client should open with a pre-filled message to hr@infleciq.org');
+
+  } catch (error) {
+    console.error('Error:', error);
+    alert('Error submitting form. Please email hr@infleciq.org directly.');
+  } finally {
+    setIsSubmitting(false);
+  }
+};
 
   const whyChooseUs = [
     "Experienced Full-Stack Team",
@@ -422,73 +484,83 @@ export default function LandingPage() {
       </section>
 
       {/* Contact Form */}
-      <section id="contact" className="px-6 py-20 bg-white">
-        <div className="max-w-4xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Get In Touch</h2>
-            <p className="text-xl text-gray-600">Need a custom solution? Contact us below.</p>
-          </motion.div>
+     <section id="contact" className="px-6 py-20 bg-white">
+  <div className="max-w-4xl mx-auto">
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8 }}
+      className="text-center mb-12"
+    >
+      <h2 className="text-4xl font-bold text-gray-900 mb-4">Get In Touch</h2>
+      <p className="text-xl text-gray-600">Need a custom solution? Contact us below.</p>
+    </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="bg-gray-50 p-8 rounded-2xl shadow-lg"
-          >
-            <form className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-                    Full Name
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="Your full name"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                    Email Address
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="your@email.com"
-                  />
-                </div>
-              </div>
-              <div>
-                <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
-                  Message
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  rows={6}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="Tell us about your project..."
-                ></textarea>
-              </div>
-              <button
-                type="submit"
-                className="w-full bg-gradient-to-r from-blue-600 to-teal-600 text-white px-8 py-4 rounded-xl font-semibold text-lg hover:shadow-lg hover:scale-105 transition-all duration-300"
-              >
-                Send Message
-              </button>
-            </form>
-          </motion.div>
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, delay: 0.2 }}
+      className="bg-gray-50 p-8 rounded-2xl shadow-lg"
+    >
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+              Full Name
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              required
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              placeholder="Your full name"
+            />
+          </div>
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+              Email Address
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              placeholder="your@email.com"
+            />
+          </div>
         </div>
-      </section>
+        <div>
+          <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
+            Message
+          </label>
+          <textarea
+            id="message"
+            name="message"
+            rows={6}
+            value={formData.message}
+            onChange={handleChange}
+            required
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            placeholder="Tell us about your project..."
+          ></textarea>
+        </div>
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className="w-full bg-gradient-to-r from-blue-600 to-teal-600 text-white px-8 py-4 rounded-xl font-semibold text-lg hover:shadow-lg hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+        >
+          {isSubmitting ? 'Opening Email...' : 'Send Message'}
+        </button>
+      </form>
+    </motion.div>
+  </div>
+</section>
 
       {/* Footer */}
       <footer className="bg-gray-900 text-white px-6 py-12">
