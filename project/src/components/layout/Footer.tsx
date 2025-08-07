@@ -24,9 +24,15 @@ export default function Footer() {
               <p className="mt-2 text-green-400">✅ E-Verified Company</p>
             </div>
             <div className="flex space-x-4">
-              <a href="#" className="text-gray-400 hover:text-blue-400 transition-colors">
-                <Linkedin className="h-6 w-6" />
-              </a>
+             <a 
+  href="https://www.linkedin.com/company/infleciq" 
+  className="text-gray-400 hover:text-blue-400 transition-colors"
+  target="_blank"
+  rel="noopener noreferrer"
+  aria-label="Visit InflecIQ on LinkedIn"
+>
+  <Linkedin className="h-6 w-6" />
+</a>
               <a href="#" className="text-gray-400 hover:text-blue-400 transition-colors">
                 <Twitter className="h-6 w-6" />
               </a>
